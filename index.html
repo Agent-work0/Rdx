@@ -135,6 +135,11 @@ body.body-dragging #bg-site {
 .warning-text { color: #fff; font-size: 11px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; text-align: center; }
 .full-overlay-warning { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; border-radius: 0 0 16px 16px; padding: 20px; text-align: center; }
 
+/* 🔑 PASSWORD INPUT STYLES */
+#access-key-input { width: 90%; padding: 10px 12px; margin-bottom: 8px; background: rgba(0, 0, 0, 0.6); border: 1px solid var(--electric-blue); border-radius: 8px; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 800; text-align: center; outline: none; box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.2); transition: all 0.3s ease; text-transform: uppercase; margin-left: auto; margin-right: auto; display: block; touch-action: manipulation; cursor: text; }
+#access-key-input:focus { box-shadow: 0 0 15px rgba(0, 229, 255, 0.5), inset 0 0 10px rgba(0, 229, 255, 0.4); border-color: #fff; }
+#auth-error { color: var(--neon-red); font-size: 10px; font-weight: 900; margin-bottom: 12px; height: 12px; opacity: 0; transition: opacity 0.3s; text-shadow: 0 0 8px var(--neon-red); letter-spacing: 1px; text-align: center; }
+
 /* 🏆 WIN OVERLAY */
 #win-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.88); backdrop-filter: blur(10px); z-index:2000; display:none; flex-direction:column; justify-content:center; align-items:center; border-radius: 0 0 16px 16px; text-align: center; }
 .win-text { font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: var(--gold-win); text-align: center; text-transform: uppercase; text-shadow: 0 0 30px var(--gold-win), 0 0 10px #fff, 2px 4px 6px rgba(0,0,0,0.8); line-height: 1.2; animation: jackpotDoublePop 1s cubic-bezier(0.25, 1.2, 0.5, 1) forwards; padding: 0 10px; }
@@ -176,7 +181,7 @@ body.body-dragging #bg-site {
 .acc-fill { width:0%; height:100%; background: linear-gradient(90deg, var(--electric-blue), #ffffff); box-shadow: 0 0 10px var(--electric-blue); transition: width 0.1s ease-out; position: relative; will-change: width; }
 .acc-fill::after { content:''; position:absolute; top:0; left:0; bottom:0; right:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: sweepLight 1.5s infinite linear; }
 
-/* 📱 BOTTOM NAV */
+/* 📱 BOTTOM NAV (MODIFIED TO 2 TABS: PREDICT & HISTORY) */
 .nav-row { display:flex; gap:5px; margin-top:10px; transform: translateY(30px) translate3d(0,0,0); opacity: 0; will-change: transform, opacity; width: 100%; }
 .nav-tab { flex:1; height:42px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:rgba(0,0,0,0.4); color:#9ca3af; font-weight:800; font-size:9px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px; cursor:pointer; transition: all 0.25s ease; position: relative; overflow:hidden; touch-action: manipulation; }
 .nav-tab i { font-size: 14px; }
@@ -310,6 +315,23 @@ body.body-dragging #bg-site {
       <h2 id="loader-text" style="color:#fff; margin-top:10px; font-size:12px; letter-spacing:1.5px; font-weight:800; text-transform: uppercase; text-align: center; padding: 0 10px;">Syncing Neural Net...</h2>
     </div>
 
+    <!-- 0️⃣ AUTHENTICATION SCREEN -->
+    <div id="auth-screen" class="anim-slide-up" style="display:block; width: 100%;">
+        <i class="fas fa-lock screen-icon" id="auth-icon" style="color: var(--neon-red); filter: drop-shadow(0px 0px 12px var(--neon-red));"></i>
+        <div class="big-title" id="auth-title">SYSTEM LOCKED</div>
+        <div class="small-text" id="auth-desc">Enter authorization key to access the hack engine.</div>
+        
+        <input type="text" id="access-key-input" placeholder="ENTER KEY..." autocomplete="off" />
+        <div id="auth-error">INVALID KEY OR EXPIRED</div>
+        
+        <button class="btn blue-btn ripple-btn" onclick="createRipple(event); playClick(); verifyKey()">
+            <i class="fas fa-key"></i> UNLOCK SYSTEM
+        </button>
+        <button class="btn green-btn ripple-btn" style="margin-top: 5px;" onclick="createRipple(event); playClick(); window.open('https://t.me/Rdxkarann','_blank')">
+            <i class="fab fa-telegram"></i> GET KEY
+        </button>
+    </div>
+
     <!-- 1️⃣ REGISTER ID SCREEN -->
     <div id="register-screen" class="anim-slide-up" style="display:none; width: 100%;">
       <i class="fas fa-satellite-dish screen-icon" id="reg-icon"></i>
@@ -403,7 +425,7 @@ body.body-dragging #bg-site {
         </div>
       </div>
 
-      <!-- BOTTOM NAVIGATION -->
+      <!-- BOTTOM NAVIGATION (UPDATED TO 2 TABS) -->
       <div class="nav-row" id="bottom-nav">
         <div class="nav-tab active ripple-btn" data-tab="prediction" onclick="createRipple(event); switchTab('prediction')">
             <i class="fas fa-microchip"></i>PREDICT
@@ -608,46 +630,33 @@ let currentFilter = 'ALL';
 let predictionCount = 0; 
 
 // ==========================================
-// 🧠 HISTORY PATTERN + 10-SUM NUMBER ENGINE
+// 🧠 ADVANCED PATTERN + RECENT TREND QUANTUM ENGINE
 // ==========================================
 class QuantumEngine {
     constructor() {
-        this.lastSide = null;
-        this.sideHistory = [];
         this.numberLossLevel = 0;
-        this.patternWeights = { 2: 1.0, 3: 1.5, 4: 2.0, 5: 2.5, 6: 3.0 };
     }
 
     analyze(rawHistory, currentHistoryList, deepAnalysis) {
         if (!Array.isArray(rawHistory) || rawHistory.length < 10) {
-            return { side: 'NO SIGNAL', num: '?', secondaryNum: '?', colorHex: '#9ca3af', confidence: '0.0', pattern: 'INSUFFICIENT DATA' };
+            return { side: 'BIG', num: '7', secondaryNum: '9', colorHex: cMap[7], confidence: '50.0', pattern: 'DEFAULT (INSUFFICIENT DATA)', numberLevel: 0 };
         }
 
-        const nums = rawHistory
-            .slice(0, 50)
-            .map(x => parseInt(x.number))
-            .filter(n => Number.isInteger(n) && n >= 0 && n <= 9);
-            
+        const nums = rawHistory.slice(0, 60).map(x => parseInt(x.number)).filter(n => Number.isInteger(n) && n >= 0 && n <= 9);
         if (nums.length < 10) {
-            return { side: 'NO SIGNAL', num: '?', secondaryNum: '?', colorHex: '#9ca3af', confidence: '0.0', pattern: 'INSUFFICIENT VALID DATA' };
+             return { side: 'BIG', num: '7', secondaryNum: '9', colorHex: cMap[7], confidence: '50.0', pattern: 'DEFAULT (INSUFFICIENT DATA)', numberLevel: 0 };
         }
 
         const sides = nums.map(n => n >= 5 ? 'BIG' : 'SMALL');
         const sideResult = this.analyzeSidePattern(sides);
-        const numberResult = this.calculateTenPeriodNumber(nums);
-        const recoveryNumber = this.applyNumberLossLevel(
-            numberResult.primary, 
-            numberResult.secondary, 
-            this.numberLossLevel
-        );
-        const finalNumber = recoveryNumber.primary;
+        const numberResult = this.calculateNumber(nums, sideResult.side);
 
-        return { 
-            side: sideResult.side, 
-            num: finalNumber.toString(), 
-            secondaryNum: recoveryNumber.secondary.toString(),
-            colorHex: cMap[finalNumber], 
-            confidence: sideResult.confidence, 
+        return {
+            side: sideResult.side,
+            num: numberResult.primary.toString(),
+            secondaryNum: numberResult.secondary.toString(),
+            colorHex: cMap[numberResult.primary],
+            confidence: sideResult.confidence,
             pattern: deepAnalysis ? `DEEP SCAN • ${sideResult.pattern}` : sideResult.pattern,
             sum10: numberResult.total,
             baseNumber: numberResult.primary,
@@ -656,169 +665,87 @@ class QuantumEngine {
     }
 
     analyzeSidePattern(sides) {
-        const windows = [3, 5, 7, 10, 15, 20];
         let bigScore = 0;
         let smallScore = 0;
         let evidence = [];
 
-        windows.forEach(size => {
-            if (sides.length < size) return;
-            const window = sides.slice(0, size);
-            
-            let big = 0;
-            let small = 0;
-            window.forEach(side => {
-                if (side === 'BIG') big++; else small++;
-            });
+        const recent3 = sides.slice(0, 3);
+        const bCount3 = recent3.filter(x => x === 'BIG').length;
+        const sCount3 = recent3.filter(x => x === 'SMALL').length;
+        
+        if (bCount3 > sCount3) bigScore += 3.0; else smallScore += 3.0;
 
-            const weight = this.patternWeights[ Math.min(size, 6) ] || 1;
-            
-            if (big > small) {
-                const strength = (big - small) / size;
-                bigScore += strength * weight;
-            } else if (small > big) {
-                const strength = (small - big) / size;
-                smallScore += strength * weight;
+        const recent5 = sides.slice(0, 5);
+        const bCount5 = recent5.filter(x => x === 'BIG').length;
+        const sCount5 = recent5.filter(x => x === 'SMALL').length;
+        if (bCount5 > sCount5) { bigScore += 2.0; } else { smallScore += 2.0; }
+
+        const currentPat = sides.slice(0, 3).reverse().map(x => x === 'BIG' ? 'B' : 'S').join('');
+        let bFollow = 0; let sFollow = 0;
+        
+        for (let i = 1; i <= sides.length - 4; i++) {
+            const histPat = sides.slice(i, i+3).reverse().map(x => x === 'BIG' ? 'B' : 'S').join('');
+            if (histPat === currentPat) {
+                const nextResult = sides[i-1];
+                if (nextResult === 'BIG') bFollow++;
+                if (nextResult === 'SMALL') sFollow++;
             }
-        });
-
-        const recentPattern = sides
-            .slice(0, 6)
-            .map(x => x === 'BIG' ? 'B' : 'S')
-            .join('');
-            
-        const patternPrediction = this.findHistoricalContinuation(sides, recentPattern);
-        
-        if (patternPrediction === 'BIG') {
-            bigScore += 2.5;
-            evidence.push('PATTERN→BIG');
         }
-        if (patternPrediction === 'SMALL') {
-            smallScore += 2.5;
-            evidence.push('PATTERN→SMALL');
+        
+        if (bFollow > sFollow) { bigScore += 4.0; evidence.push('HIST MATCH'); }
+        else if (sFollow > bFollow) { smallScore += 4.0; evidence.push('HIST MATCH'); }
+
+        const last4 = sides.slice(0,4);
+        const isZigZag = (last4[0] !== last4[1] && last4[1] !== last4[2] && last4[2] !== last4[3]);
+        if (isZigZag) {
+            if (last4[0] === 'BIG') { smallScore += 3.5; evidence.push('ZIGZAG'); }
+            else { bigScore += 3.5; evidence.push('ZIGZAG'); }
         }
 
-        const transition = this.calculateTransition(sides);
-        const latestSide = sides[0];
-        
-        if (latestSide === 'BIG') {
-            if (transition.BB > transition.BS) { bigScore += 1.5; evidence.push('BB'); }
-            if (transition.BS > transition.BB) { smallScore += 1.5; evidence.push('BS'); }
+        const isBlock = (last4[0] === last4[1] && last4[2] === last4[3] && last4[0] !== last4[2]);
+        if (isBlock) {
+             if (last4[0] === 'BIG') { smallScore += 3.0; evidence.push('BLOCK'); }
+             else { bigScore += 3.0; evidence.push('BLOCK'); }
+        }
+
+        const latest = sides[0];
+        if (latest === 'BIG') {
+            bigScore += 1.0;
         } else {
-            if (transition.SS > transition.SB) { smallScore += 1.5; evidence.push('SS'); }
-            if (transition.SB > transition.SS) { bigScore += 1.5; evidence.push('SB'); }
+            smallScore += 1.0;
         }
 
-        const streak = this.getStreak(sides);
-        if (streak.count >= 3) {
-            if (streak.side === 'BIG') {
-                bigScore += Math.min(streak.count * 0.35, 1.4);
-                evidence.push(`BIG×${streak.count}`);
-            }
-            if (streak.side === 'SMALL') {
-                smallScore += Math.min(streak.count * 0.35, 1.4);
-                evidence.push(`SMALL×${streak.count}`);
-            }
-        }
+        let side = 'BIG';
+        if (bigScore > smallScore) side = 'BIG';
+        else if (smallScore > bigScore) side = 'SMALL';
+        else side = sides[0];
 
-        const total = bigScore + smallScore;
-        if (total <= 0) {
-            return { side: 'NO SIGNAL', confidence: '0.0', pattern: 'NO HISTORICAL SIGNAL' };
-        }
+        const total = bigScore + smallScore || 1;
+        const diff = Math.abs(bigScore - smallScore);
+        
+        let confidence = 55 + ((diff / total) * 38); 
+        confidence = Math.max(55, Math.min(96.5, confidence));
 
-        const difference = Math.abs(bigScore - smallScore);
-        
-        if (difference < 0.12) { 
-            return { side: 'NO SIGNAL', confidence: '0.0', pattern: 'PATTERN CONFLICT' };
-        }
-        
-        const side = bigScore > smallScore ? 'BIG' : 'SMALL';
-        let confidence = 50 + ((difference / total) * 45); 
-        confidence = Math.max( 50, Math.min(97.5, confidence) );
-        
-        return { 
-            side, 
-            confidence: confidence.toFixed(1), 
-            pattern: `${side} • ${recentPattern}` + (evidence.length ? ` • ${evidence.slice(0, 3).join(' | ')}` : '') 
-        };
+        let patternStr = `${side} TREND`;
+        if (evidence.length > 0) patternStr = `${side} • ${evidence.join(' | ')}`;
+
+        return { side, confidence: confidence.toFixed(1), pattern: patternStr };
     }
 
-    findHistoricalContinuation(sides, currentPattern) {
-        if (currentPattern.length < 4) {
-            return 'NONE';
-        }
-        const history = sides.map(x => x === 'BIG' ? 'B' : 'S' );
-        let bigFollow = 0;
-        let smallFollow = 0;
-        const patternLength = currentPattern.length;
-        
-        for ( let i = patternLength; i < history.length; i++ ) {
-            const chunk = history
-                .slice(i, i + patternLength)
-                .join('');
-            if (chunk !== currentPattern) continue;
-            
-            const next = history[i - 1]; 
-            if (next === 'B') bigFollow++;
-            if (next === 'S') smallFollow++;
-        }
-        
-        if (bigFollow === 0 && smallFollow === 0) return 'NONE';
-        if (bigFollow > smallFollow) return 'BIG';
-        if (smallFollow > bigFollow) return 'SMALL';
-        return 'NONE';
-    }
-
-    calculateTransition(sides) {
-        let BB = 0; let BS = 0; let SB = 0; let SS = 0;
-        for (let i = 1; i < sides.length; i++) {
-            const current = sides[i - 1]; 
-            const previous = sides[i]; 
-            if (previous === 'BIG' && current === 'BIG') BB++;
-            if (previous === 'BIG' && current === 'SMALL') BS++;
-            if (previous === 'SMALL' && current === 'BIG') SB++;
-            if (previous === 'SMALL' && current === 'SMALL') SS++;
-        }
-        return { 
-            BB: BB / Math.max(1, BB + BS), 
-            BS: BS / Math.max(1, BB + BS), 
-            SB: SB / Math.max(1, SB + SS), 
-            SS: SS / Math.max(1, SB + SS) 
-        };
-    }
-
-    calculateTenPeriodNumber(nums) {
+    calculateNumber(nums, predictedSide) {
+        const pool = predictedSide === 'BIG' ? [5,6,7,8,9] : [0,1,2,3,4];
         const last10 = nums.slice(0, 10);
         const total = last10.reduce((sum, num) => sum + num, 0);
-        const primary = total % 10;
-        const secondary = (primary + 3) % 10;
         
-        return { total, primary, secondary };
-    }
+        let baseIndex = (total % 5);
+        let primaryIndex = (baseIndex + this.numberLossLevel) % 5;
+        let secondaryIndex = (primaryIndex + 2) % 5;
 
-    applyNumberLossLevel(baseNumber, secondaryNumber, level) {
-        const numberSequence = [
-            baseNumber,
-            (baseNumber + 3) % 10,
-            (baseNumber + 6) % 10,
-            (baseNumber + 8) % 10,
-            (baseNumber + 5) % 10
-        ];
-        
-        const primary = numberSequence[Math.min(level, 4)];
-        const secondary = (primary + 3) % 10;
-        
-        return { primary, secondary };
-    }
-
-    getStreak(sides) {
-        if (!sides.length) return { side: null, count: 0 };
-        const first = sides[0];
-        let count = 0;
-        for (const side of sides) {
-            if (side === first) count++; else break;
-        }
-        return { side: first, count };
+        return {
+            total,
+            primary: pool[primaryIndex],
+            secondary: pool[secondaryIndex]
+        };
     }
 
     updateNumberResult(won) {
@@ -846,16 +773,56 @@ function speakPrediction(side, number) {
 
 window.onload = () => {
     createParticles();
-    document.getElementById("register-screen").style.display = "block";
+    document.getElementById("auth-screen").style.display = "block";
+    document.getElementById("register-screen").style.display = "none";
     document.getElementById("pre-activate-warning-screen").style.display = "none";
     document.getElementById("deposit-screen").style.display = "none";
     document.getElementById("hack-screen").style.display = "none";
-    document.getElementById("reg-icon").classList.add("anim-pop");
-    speakDepositInstruction(); // Automatically speaks instruction now
+    document.getElementById("auth-icon").classList.add("anim-pop");
 };
 
 function handleFloatClick(){ initAudio(); playClick(); document.getElementById("panel").classList.add("active"); }
 function closePanel(){ playClick(); document.getElementById("panel").classList.remove("active"); }
+
+async function verifyKey() {
+    const inputVal = document.getElementById("access-key-input").value.trim().toUpperCase();
+    const errorMsg = document.getElementById("auth-error");
+    if (inputVal === "RDXKARAN0987") { grantAccess(); return; }
+    try {
+        let snapshot = await db.ref('admin/keys/' + inputVal).once('value');
+        if (snapshot.exists() && snapshot.val().status === 'active') { grantAccess(); } 
+        else { showAuthError(errorMsg, "INVALID KEY OR EXPIRED"); }
+    } catch(err) { showAuthError(errorMsg, "SERVER CONNECTION ERROR"); }
+}
+
+function grantAccess() {
+    const errorMsg = document.getElementById("auth-error");
+    errorMsg.style.opacity = 0; playSuccess(); speakDepositInstruction(); 
+    
+    const loader = document.getElementById("main-loader");
+    const speedTxt = document.getElementById("speed-percent");
+    const loadTxt = document.getElementById("loader-text");
+    
+    speedTxt.innerText = "SUCCESS"; speedTxt.style.fontSize = "30px";
+    loadTxt.innerText = "Access Granted."; loadTxt.style.color = "var(--neon-green)";
+    loader.style.display = "flex";
+    
+    setTimeout(() => {
+        loader.style.display = "none";
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("register-screen").style.display = "block";
+        document.getElementById("reg-icon").classList.add("anim-pop");
+        
+        speedTxt.style.fontSize = "40px"; speedTxt.innerText = "0%";
+        loadTxt.style.color = "#fff"; loadTxt.innerText = "Syncing Neural Net...";
+    }, 2000);
+}
+
+function showAuthError(errorMsg, text) {
+    playDigitalBeep(); errorMsg.innerText = text; errorMsg.style.opacity = 1;
+    document.getElementById("access-key-input").classList.add("shake-effect");
+    setTimeout(() => { document.getElementById("access-key-input").classList.remove("shake-effect"); }, 400);
+}
 
 function registerDone() {
   const body = document.getElementById("main-body");
@@ -1146,12 +1113,6 @@ function forceRecheck() {
       setTimeout(() => {
           let p = cachedActivePrediction;
           
-          if (p.side !== 'NO SIGNAL' && p.pattern.indexOf("ADMIN") === -1) {
-              const validRange = p.side === 'BIG' ? [5,6,7,8,9] : [0,1,2,3,4];
-              p.num = validRange[Math.floor(Math.random() * validRange.length)].toString();
-              p.colorHex = cMap[p.num];
-          }
-
           document.getElementById("patternStatus").innerText = p.pattern;
           const sideEl = document.getElementById("r-side");
           sideEl.innerText = p.side;
@@ -1169,27 +1130,14 @@ function forceRecheck() {
 function switchTab(tab) {
     initAudio(); playClick();
     ["prediction", "history"].forEach(t => {
-        let page = document.getElementById("page-" + t);
-        if(page) page.classList.remove("active"); 
-        let tabEl = document.querySelector(`.nav-tab[data-tab="${t}"]`);
-        if(tabEl) tabEl.classList.remove("active");
+        document.getElementById("page-" + t).classList.remove("active"); 
+        document.querySelector(`.nav-tab[data-tab="${t}"]`).classList.remove("active");
     });
+    document.getElementById("page-" + tab).classList.add("active"); 
+    document.querySelector(`.nav-tab[data-tab="${tab}"]`).classList.add("active");
     
-    let activePage = document.getElementById("page-" + tab);
-    if(activePage) activePage.classList.add("active"); 
-    
-    let activeTab = document.querySelector(`.nav-tab[data-tab="${tab}"]`);
-    if(activeTab) activeTab.classList.add("active");
-    
-    if (tab === 'history') { 
-        document.documentElement.style.setProperty('--theme-main', 'var(--neon-red)'); 
-        document.getElementById("amb-r").style.background = 'var(--neon-red)'; 
-        renderHistory(); 
-    } 
-    else { 
-        if(historyList.length > 0) applyTheme(historyList[0].colorHex); 
-        else applyTheme('#ff3333'); 
-    }
+    if (tab === 'history') { document.documentElement.style.setProperty('--theme-main', 'var(--neon-red)'); document.getElementById("amb-r").style.background = 'var(--neon-red)'; renderHistory(); } 
+    else { if(historyList.length > 0) applyTheme(historyList[0].colorHex); else applyTheme('#ff3333'); }
 }
 
 function initPointerDrag(element, handle, storageKey, isFloatingBtn) {
