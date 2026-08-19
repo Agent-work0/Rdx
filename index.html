@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<title>RDX PANNEL</title>
+<title>𝗥𝗗𝗫 𝗣𝗔𝗡𝗡𝗘𝗟</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -181,12 +181,14 @@ body.body-dragging #bg-site {
 .acc-fill { width:0%; height:100%; background: linear-gradient(90deg, var(--electric-blue), #ffffff); box-shadow: 0 0 10px var(--electric-blue); transition: width 0.1s ease-out; position: relative; will-change: width; }
 .acc-fill::after { content:''; position:absolute; top:0; left:0; bottom:0; right:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: sweepLight 1.5s infinite linear; }
 
-/* 📱 BOTTOM NAV (MODIFIED TO 2 TABS: PREDICT & HISTORY) */
+/* 📱 BOTTOM NAV */
 .nav-row { display:flex; gap:5px; margin-top:10px; transform: translateY(30px) translate3d(0,0,0); opacity: 0; will-change: transform, opacity; width: 100%; }
 .nav-tab { flex:1; height:42px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:rgba(0,0,0,0.4); color:#9ca3af; font-weight:800; font-size:9px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px; cursor:pointer; transition: all 0.25s ease; position: relative; overflow:hidden; touch-action: manipulation; }
 .nav-tab i { font-size: 14px; }
 .nav-tab.active[data-tab="prediction"] { background:linear-gradient(135deg, rgba(0,198,255,0.18), rgba(0,114,255,0.18)); color:var(--electric-blue); border-color:var(--electric-blue); box-shadow: 0 0 12px rgba(0, 198, 255, 0.25); }
 .nav-tab.active[data-tab="history"] { background:linear-gradient(135deg, rgba(255,51,51,0.18), rgba(255,140,0,0.18)); color:var(--neon-red); border-color:var(--neon-red); box-shadow: 0 0 12px rgba(255, 51, 51, 0.25); }
+.nav-tab.active[data-tab="server"] { background:linear-gradient(135deg, rgba(0,255,132,0.18), rgba(0,200,100,0.18)); color:var(--neon-green); border-color:var(--neon-green); box-shadow: 0 0 12px rgba(0, 255, 132, 0.25); }
+.nav-tab.active[data-tab="telegram"] { background:linear-gradient(135deg, rgba(0,136,204,0.18), rgba(0,102,153,0.18)); color:#00e5ff; border-color:#0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.25); }
 .page { display:none; width: 100%; }
 .page.active { display:block; animation: fadeIn 0.3s ease; }
 
@@ -215,6 +217,126 @@ body.body-dragging #bg-site {
 .hist-row.loss-row .hist-status { background: rgba(255,51,51,0.12); color: var(--neon-red); }
 .hist-row.wait-row { border-left-color: #f1c40f; }
 .hist-row.wait-row .hist-status { background: rgba(241, 196, 15, 0.12); color: #f1c40f; }
+
+/* 🔵 ANIMATED TELEGRAM LOGO CIRCLE */
+.tg-logo-wrapper {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0, 136, 204, 0.5);
+}
+.tg-logo-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: conic-gradient(from 0deg, #00e5ff, #c026d3, #ff3333, #00ff84, #00e5ff);
+    animation: spinBorder 3s linear infinite;
+}
+.tg-logo-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 4px; 
+    background: #0B0B0F; 
+    border-radius: 50%;
+}
+.tg-logo-wrapper img {
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 10;
+}
+@keyframes spinBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 🖥️ CUSTOM SCANNER SERVER BOX STYLES */
+.vip-header-title {
+    color: var(--neon-green);
+    font-size: 14px;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--neon-green);
+}
+.server-scanner-box {
+    width: 180px;
+    height: 180px;
+    border: 2px dashed var(--neon-green);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 132, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.server-scanner-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.plan-select-wrapper {
+    width: 90%;
+    margin-bottom: 12px;
+}
+.plan-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 0 2px;
+}
+.plan-label {
+    font-size: 9px;
+    font-weight: 900;
+    color: #9ca3af;
+    text-transform: uppercase;
+}
+.more-plans-badge {
+    font-size: 9px;
+    font-weight: 900;
+    color: var(--electric-blue);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 5px var(--electric-blue);
+}
+.plan-dropdown {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--neon-green);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    outline: none;
+    box-shadow: inset 0 0 12px rgba(0, 255, 132, 0.2);
+    cursor: pointer;
+    text-align: center;
+    touch-action: manipulation;
+}
+.plan-dropdown option {
+    background: #0B0B0F;
+    color: #fff;
+    padding: 10px;
+    font-weight: 800;
+}
 
 /* 🎬 CORE ANIMATIONS */
 @keyframes buttonShine { 0% { left: -100%; } 25% { left: 100%; } 100% { left: 100%; } }
@@ -263,7 +385,7 @@ body.body-dragging #bg-site {
 </head>
 <body>
 
-<iframe id="bg-site" src="https://www.tashanwin16.com/#/register?invitationCode=742646452316"></iframe>
+<iframe id="bg-site" src="https://www.6club11.in/#/register?invitationCode=611816063337"></iframe>
 
 <!-- FLOATING BUTTON WITH IMAGE -->
 <div id="float-bt">
@@ -280,7 +402,7 @@ body.body-dragging #bg-site {
 
   <div class="p-head" id="panel-handle">
     <div class="head-left">
-        <h2 id="panel-title">RDX PANNEL</h2>
+        <h2 id="panel-title">𝗥𝗗𝗫 𝗣𝗔𝗡𝗡𝗘𝗟</h2>
     </div>
     <div class="status-badge">
         <span class="online">ONLINE</span>
@@ -337,7 +459,7 @@ body.body-dragging #bg-site {
       <i class="fas fa-satellite-dish screen-icon" id="reg-icon"></i>
       <div class="big-title" id="reg-title">REGISTER NOW</div>
       <div class="small-text" id="reg-desc">Register a fresh account on the server to synchronize the AI engine data stream.</div>
-      <button class="btn blue-btn ripple-btn" onclick="createRipple(event); playClick(); window.open('https://www.tashanwin16.com/#/register?invitationCode=742646452316','_blank')">
+      <button class="btn blue-btn ripple-btn" onclick="createRipple(event); playClick(); window.open('https://www.6club11.in/#/register?invitationCode=611816063337','_blank')">
         <i class="fas fa-user-plus"></i> Register ID
       </button>
       <button class="btn red-btn anim-delay-bounce ripple-btn" id="reg-done-btn" onclick="createRipple(event); playClick(); registerDone()">
@@ -425,13 +547,65 @@ body.body-dragging #bg-site {
         </div>
       </div>
 
-      <!-- BOTTOM NAVIGATION (UPDATED TO 2 TABS) -->
+      <!-- 🟢 SERVER CONNECT PAGE -->
+      <div id="page-server" class="page">
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:2px 0;">
+            
+            <div class="vip-header-title"><i class="fas fa-crown"></i> ONLY PROFIT </div>
+
+            <div class="server-scanner-box">
+                <img src="YOUR_IMAGE_HERE.jpg" alt="Server Scanner" onerror="this.src='https://via.placeholder.com/180/00ff84/000000?text=SCANNER+QR';">
+            </div>
+
+            <input type="text" id="utr-input" placeholder="FILL UTR" autocomplete="off" style="width: 90%; padding: 10px 12px; margin-bottom: 10px; background: rgba(0, 0, 0, 0.6); border: 1px solid var(--electric-blue); border-radius: 8px; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; text-align: center; outline: none; box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.2); transition: all 0.3s ease; text-transform: uppercase;" onfocus="this.style.boxShadow='0 0 15px rgba(0, 229, 255, 0.5), inset 0 0 10px rgba(0, 229, 255, 0.4)'; this.style.borderColor='#fff';" onblur="this.style.boxShadow='inset 0 0 12px rgba(0, 229, 255, 0.2)'; this.style.borderColor='var(--electric-blue)';"/>
+            
+            <div class="plan-select-wrapper">
+                <div class="plan-label-row">
+                    <span class="plan-label">SELECT ACCESS PLAN:</span>
+                    <span class="more-plans-badge" onclick="focusPlanDropdown()"><i class="fas fa-chevron-down"></i> MORE PLANS</span>
+                </div>
+                <select id="access-plan-select" class="plan-dropdown">
+                    <option value="500">Rs 500 - 1 Hour Access</option>
+                    <option value="800">Rs 800 - 2 Hours Access</option>
+                    <option value="1500">Rs 1500 - 5 Hours Access</option>
+                    <option value="3000">Rs 3000 - 24 Hours Access</option>
+                </select>
+            </div>
+
+            <button class="btn green-btn ripple-btn" style="height:42px; width:90%; font-size: 12px; font-weight: 900;" onclick="createRipple(event); playClick(); submitUTR()">
+                <i class="fas fa-link"></i> CONNECT SERVER
+            </button>
+        </div>
+      </div>
+
+      <!-- TELEGRAM PAGE -->
+      <div id="page-telegram" class="page">
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:8px 0;">
+            
+            <div class="tg-logo-wrapper">
+                <img src="telegram-logo.jpg" alt="Telegram">
+            </div>
+
+            <div style="color:#e5e7eb; font-size:12px; font-weight:800; line-height:1.45; margin-bottom:15px; text-align: center; padding: 0 8px;">NUMBER PREDICTION CHANNEL JOIN NOW</div>
+            <button class="btn blue-btn ripple-btn" style="height:45px; width:90%;" onclick="createRipple(event); playClick(); window.open('https://t.me/+59vvhIhKLgkwYmE9', '_blank')">
+                <i class="fas fa-paper-plane"></i> Join Telegram
+            </button>
+        </div>
+      </div>
+
+      <!-- BOTTOM NAVIGATION -->
       <div class="nav-row" id="bottom-nav">
         <div class="nav-tab active ripple-btn" data-tab="prediction" onclick="createRipple(event); switchTab('prediction')">
             <i class="fas fa-microchip"></i>PREDICT
         </div>
         <div class="nav-tab ripple-btn" data-tab="history" onclick="createRipple(event); switchTab('history')">
             <i class="fas fa-clock-rotate-left"></i>HISTORY
+        </div>
+        <div class="nav-tab ripple-btn" data-tab="server" onclick="createRipple(event); switchTab('server')">
+            <i class="fas fa-server"></i>SERVER
+        </div>
+        <div class="nav-tab ripple-btn" data-tab="telegram" onclick="createRipple(event); switchTab('telegram')">
+            <i class="fab fa-telegram-plane"></i>CONNECT
         </div>
       </div>
     </div>
@@ -639,6 +813,7 @@ class QuantumEngine {
 
     analyze(rawHistory, currentHistoryList, deepAnalysis) {
         if (!Array.isArray(rawHistory) || rawHistory.length < 10) {
+            // Force a default if extremely new, to avoid NO SIGNAL
             return { side: 'BIG', num: '7', secondaryNum: '9', colorHex: cMap[7], confidence: '50.0', pattern: 'DEFAULT (INSUFFICIENT DATA)', numberLevel: 0 };
         }
 
@@ -648,7 +823,11 @@ class QuantumEngine {
         }
 
         const sides = nums.map(n => n >= 5 ? 'BIG' : 'SMALL');
+
+        // 1. BIG/SMALL ENGINE
         const sideResult = this.analyzeSidePattern(sides);
+
+        // 2. NUMBER ENGINE (Strictly confined to sideResult.side pool)
         const numberResult = this.calculateNumber(nums, sideResult.side);
 
         return {
@@ -669,6 +848,8 @@ class QuantumEngine {
         let smallScore = 0;
         let evidence = [];
 
+        // --- Current Trend Analysis (Last 3, 5) ---
+        // We look at the most recent ones. index 0 is latest.
         const recent3 = sides.slice(0, 3);
         const bCount3 = recent3.filter(x => x === 'BIG').length;
         const sCount3 = recent3.filter(x => x === 'SMALL').length;
@@ -680,13 +861,16 @@ class QuantumEngine {
         const sCount5 = recent5.filter(x => x === 'SMALL').length;
         if (bCount5 > sCount5) { bigScore += 2.0; } else { smallScore += 2.0; }
 
+        // --- Historical Pattern Continuation ---
+        // Build chronological string of last 3: sides[2] + sides[1] + sides[0]
         const currentPat = sides.slice(0, 3).reverse().map(x => x === 'BIG' ? 'B' : 'S').join('');
         let bFollow = 0; let sFollow = 0;
         
+        // Search history (i is the index of the newest element in the historical window)
         for (let i = 1; i <= sides.length - 4; i++) {
             const histPat = sides.slice(i, i+3).reverse().map(x => x === 'BIG' ? 'B' : 'S').join('');
             if (histPat === currentPat) {
-                const nextResult = sides[i-1];
+                const nextResult = sides[i-1]; // The result that immediately followed the pattern
                 if (nextResult === 'BIG') bFollow++;
                 if (nextResult === 'SMALL') sFollow++;
             }
@@ -695,30 +879,35 @@ class QuantumEngine {
         if (bFollow > sFollow) { bigScore += 4.0; evidence.push('HIST MATCH'); }
         else if (sFollow > bFollow) { smallScore += 4.0; evidence.push('HIST MATCH'); }
 
+        // --- ZigZag & Block Detection ---
         const last4 = sides.slice(0,4);
         const isZigZag = (last4[0] !== last4[1] && last4[1] !== last4[2] && last4[2] !== last4[3]);
         if (isZigZag) {
+            // Predict continuation of zigzag
             if (last4[0] === 'BIG') { smallScore += 3.5; evidence.push('ZIGZAG'); }
             else { bigScore += 3.5; evidence.push('ZIGZAG'); }
         }
 
         const isBlock = (last4[0] === last4[1] && last4[2] === last4[3] && last4[0] !== last4[2]);
         if (isBlock) {
+             // Block of 2 alternating. e.g. B B S S. Next should be B.
              if (last4[0] === 'BIG') { smallScore += 3.0; evidence.push('BLOCK'); }
              else { bigScore += 3.0; evidence.push('BLOCK'); }
         }
 
+        // --- Transition Weighting ---
         const latest = sides[0];
         if (latest === 'BIG') {
-            bigScore += 1.0;
+            bigScore += 1.0; // Momentum
         } else {
             smallScore += 1.0;
         }
 
+        // --- Ensure No "NO SIGNAL" ---
         let side = 'BIG';
         if (bigScore > smallScore) side = 'BIG';
         else if (smallScore > bigScore) side = 'SMALL';
-        else side = sides[0];
+        else side = sides[0]; // Fallback to immediate continuation on tie
 
         const total = bigScore + smallScore || 1;
         const diff = Math.abs(bigScore - smallScore);
@@ -733,11 +922,17 @@ class QuantumEngine {
     }
 
     calculateNumber(nums, predictedSide) {
+        // Strict boundary for numbers based on the selected side.
         const pool = predictedSide === 'BIG' ? [5,6,7,8,9] : [0,1,2,3,4];
+        
+        // Sum modulo fallback
         const last10 = nums.slice(0, 10);
         const total = last10.reduce((sum, num) => sum + num, 0);
         
+        // Pick an index from the pool (0 to 4)
+        // Shift by numberLossLevel to recover
         let baseIndex = (total % 5);
+        
         let primaryIndex = (baseIndex + this.numberLossLevel) % 5;
         let secondaryIndex = (primaryIndex + 2) % 5;
 
@@ -787,7 +982,7 @@ function closePanel(){ playClick(); document.getElementById("panel").classList.r
 async function verifyKey() {
     const inputVal = document.getElementById("access-key-input").value.trim().toUpperCase();
     const errorMsg = document.getElementById("auth-error");
-    if (inputVal === "RDXKARAN0987") { grantAccess(); return; }
+    if (inputVal === "RS KING") { grantAccess(); return; }
     try {
         let snapshot = await db.ref('admin/keys/' + inputVal).once('value');
         if (snapshot.exists() && snapshot.val().status === 'active') { grantAccess(); } 
@@ -934,7 +1129,10 @@ function processHistoryStatus(listLogs) {
         h.actual = actualNum;
         const actualSide = actualNum >= 5 ? "BIG" : "SMALL";
 
+        // NUMBER HIT
         const numberHit = Number(h.num) === actualNum || Number(h.secondaryNum) === actualNum;
+        
+        // SIDE HIT
         const sideHit = h.side === actualSide;
 
         if (numberHit) {
@@ -1129,15 +1327,31 @@ function forceRecheck() {
 
 function switchTab(tab) {
     initAudio(); playClick();
-    ["prediction", "history"].forEach(t => {
+    ["prediction", "history", "server", "telegram"].forEach(t => {
         document.getElementById("page-" + t).classList.remove("active"); 
         document.querySelector(`.nav-tab[data-tab="${t}"]`).classList.remove("active");
     });
     document.getElementById("page-" + tab).classList.add("active"); 
     document.querySelector(`.nav-tab[data-tab="${tab}"]`).classList.add("active");
     
-    if (tab === 'history') { document.documentElement.style.setProperty('--theme-main', 'var(--neon-red)'); document.getElementById("amb-r").style.background = 'var(--neon-red)'; renderHistory(); } 
+    if(tab === 'telegram') { document.documentElement.style.setProperty('--theme-main', '#0088cc'); document.getElementById("amb-r").style.background = '#0088cc'; } 
+    else if (tab === 'history') { document.documentElement.style.setProperty('--theme-main', 'var(--neon-red)'); document.getElementById("amb-r").style.background = 'var(--neon-red)'; renderHistory(); } 
+    else if (tab === 'server') { document.documentElement.style.setProperty('--theme-main', '#00ff84'); document.getElementById("amb-r").style.background = '#00ff84'; } 
     else { if(historyList.length > 0) applyTheme(historyList[0].colorHex); else applyTheme('#ff3333'); }
+}
+
+function focusPlanDropdown() { playClick(); let selectEl = document.getElementById("access-plan-select"); selectEl.focus(); }
+
+function submitUTR() {
+    let utrInput = document.getElementById("utr-input").value.trim();
+    let selectedPlan = document.getElementById("access-plan-select").value;
+    if (utrInput === "") {
+        document.getElementById("utr-input").classList.add("shake-effect");
+        setTimeout(() => document.getElementById("utr-input").classList.remove("shake-effect"), 400); playDigitalBeep();
+    } else {
+        playSuccess(); alert("Server Connecting with UTR: " + utrInput + "\nSelected Plan: Rs " + selectedPlan);
+        document.getElementById("utr-input").value = "";
+    }
 }
 
 function initPointerDrag(element, handle, storageKey, isFloatingBtn) {
